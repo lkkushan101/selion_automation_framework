@@ -1,0 +1,43 @@
+{
+  "reportSummary": {
+    "testMethodsSummary": {
+      "running": 1,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0
+    },
+    "configurationMethodsSummary": {
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "testMethods": [
+    {
+      "suite": "Selion Test",
+      "test": "SampleTest",
+      "packageInfo": "Tests",
+      "className": "LoginTest",
+      "methodName": "DemoTest1",
+      "status": "Running",
+      "startTime": "2020-11-15T19:46:37.209+05:30",
+      "endTime": "1970-01-01T05:30:00.000+05:30"
+    }
+  ],
+  "configurationMethods": [],
+  "configSummary": {
+    "currentDate": "2020-11-15T19:46:37.118+05:30"
+  },
+  "localConfigSummary": [
+    {
+      "currentDate": "2020-11-15T19:46:37.191+05:30",
+      "suite": "Selion Test",
+      "test": "SampleTest"
+    }
+  ],
+  "reporterMetadata": {
+    "currentDate": {
+      "displayLabel": "Current Date"
+    }
+  }
+}

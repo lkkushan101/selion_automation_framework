@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<!---------------------------------------------------------------------------------------------------------------------
+|  Copyright (C) 2014 PayPal                                                                                          |
+|                                                                                                                     |
+|  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance     |
+|  with the License.                                                                                                  |
+|                                                                                                                     |
+|  You may obtain a copy of the License at                                                                            |
+|                                                                                                                     |
+|       http://www.apache.org/licenses/LICENSE-2.0                                                                    |
+|                                                                                                                     |
+|  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed   |
+|  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for  |
+|  the specific language governing permissions and limitations under the License.                                     |
+---------------------------------------------------------------------------------------------------------------------->
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>SeLion Report</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../css/bootstrap.css">
+        <link rel="stylesheet" href="../css/bootstrap-table.min.css">
+        <link rel="stylesheet" href="../css/style.min.css" />
+        <link rel="stylesheet" href="../css/treeview.css" />
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]><script src="../bower_components/html5shiv/dist/html5shiv.js"></script><script src="../bower_components/respond/dest/respond.min.js"></script><![endif]-->
+        <style type="text/css">.modal-dialog {width: 95%; min-height: 95%; padding: 0;}.modal-content {min-height: 100%; }
+        </style>
+    </head>
+    <body>
+        <!-- Header Begin -->
+        <div class="navbar" style="border-radius: 0px; margin:5px;">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse"> 
+                    <span class="icon-bar">
+                    </span>
+                    <span class="icon-bar">
+                    </span>
+                    <span class="icon-bar">
+                    </span>
+                </button>
+                <div>
+                    <img src="../images/selion-horiz-notag.svg" style="width:478px; height:80px;" alt="SeLion Logo, horizontal, without a tag line" border="0">
+                </div>
+            </div>
+            <div class="navbar-collapse collapse navbar-responsive-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                    <a href="javascript:;" id="config-popover" data-placement="bottom" data-html="true" data-toggle="popover" title="Configuration Summary">Configuration</a>
+                    </li>
+                    <li>
+                    <a href="javascript:;" class="btn-auto-update">Auto Update <span class="label label-success">On</span></a>
+                    </li>
+                    <li>
+                    <a href="javascript:;" class="btn-tree-autohide">Tree Auto Hide <span class="label label-success">On</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- Header End -->
+        <div id="bodycontent" class="container toggled">
+
+            <!-- Treeview Begin -->
+        <div id="treeview-left">
+            <label class="tree-toggler nav-header">TREEVIEW</label>
+            <div id="tree">
+            <ul>
+                <li id="AllSuites" data-type="all" data-value="All Suites">All Suites</li>
+            </ul>
+            </div>
+        </div>
+
+        <div id="result-right">
+
+        <button type="button" class="btn btn-default" id="display-tree">Tree View</button>
+            <!-- Treeview End -->
+
+            <!-- Statistics Begin -->
+            <div style="clear: both;cursor: pointer;" id="statistics-data">
+                <div id="statistics-data-skipped" class="text-center text-warning" style="float: left;">
+                </div>
+                <div id="statistics-data-running" class="text-center text-info" style="float: left;">
+                </div>
+                <div id="statistics-data-passed" class="text-center text-success" style="float: left;">
+                </div>
+                <div id="statistics-data-failed" class="text-center text-danger" style="float: left;">
+                </div>
+            </div>
+            <div class="progress" style="clear: both;cursor: pointer;">
+                <div id="statistics-progress-skipped" class="progress-bar progress-bar-warning">
+                </div>
+                <div id="statistics-progress-running" class="progress-bar progress-bar-info">
+                </div>
+                <div id="statistics-progress-passed" class="progress-bar progress-bar-success">
+                </div>
+                <div id="statistics-progress-failed" class="progress-bar progress-bar-danger">
+                </div>
+            </div>
+            <!-- Statistics End -->
+
+            <!-- Results Begin -->
+            <div class="panel panel-default" id="testcaseTable">
+                <div class="panel-heading">
+                    <div class="btn-group">
+                        <button type="button" data-index="#" class="btn btn-default active btn-list" id="testcase-btn-list" data-toggle="tooltip" title="List View">
+                            <span class="glyphicon glyphicon-th-list">
+                            </span>
+                        </button>
+                        <button type="button" data-index="#" class="btn btn-default btn-grid" id="testcase-btn-grid" data-toggle="tooltip" title="Grid View">
+                            <span class="glyphicon glyphicon-th">
+                            </span>
+                        </button>
+                    </div>&nbsp;Testcase Results
+                </div>
+                <div class="panel-body" id="testcaseParentBody">
+                     <div class="fixed-table-pagination">
+                           <div class="pull-left pageSizeInfo">
+                               <span class="page-list">Records per page
+                                     <span class="btn-group dropup">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                <span class="page-size">10</span>
+                                                <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu pageSizeCombo" role="menu">
+                                            <li><a href="javascript:void(0)">10</a></li>
+                                            <li><a href="javascript:void(0)">25</a></li>
+                                            <li><a href="javascript:void(0)">50</a></li>
+                                            <li><a href="javascript:void(0)">100</a></li>
+                                        </ul>
+                                     </span> </span>
+                           </div>
+                           <div class="pull-right search" style="margin-bottom:10px">
+                                <input type="text" class="form-control" name="testCaseSearch" id="testCaseSearch" placeholder="Search" />
+                           </div>
+                     </div>
+                     <div class="fixed-table-container" id="testcaseBody">
+                     </div>
+                      <div class="fixed-table-pagination">
+                           <div class="pull-left pagination-detail">
+                                <span class="pagination-info" id="testcase-page-info">Showing 1 to 10 of 800 rows</span>
+                           </div>
+
+                           <div class="pull-right pagination" id="testcase-pagination">
+                                <ul class="pagination">
+                                    <li class="page-first"><a href="javascript:void(0)">&lt;&lt;</a></li>
+                                    <li class="page-pre"><a href="javascript:void(0)">&lt;</a></li>
+                                    <li class="page-next"><a href="javascript:void(0)">&gt;</a></li>
+                                    <li class="page-last"><a href="javascript:void(0)">&gt;&gt;</a></li>
+                                </ul>
+                           </div>
+                      </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel panel-default" id="configTestcaseTable">
+                <div class="panel-heading">
+                    <div class="btn-group">
+                        <button type="button" data-index="#" class="btn btn-default active btn-list" id="config-testcase-btn-list" data-toggle="tooltip" title="List View">
+                            <span class="glyphicon glyphicon-th-list">
+                            </span>
+                        </button>
+                    </div>&nbsp;Configuration Results
+                </div>
+                <div class="panel-body">
+                     <div class="fixed-table-pagination">
+                           <div class="pull-left pageSizeInfo">
+                               <span class="page-list">Records per page
+                                     <span class="btn-group dropup">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                <span class="page-size">10</span>
+                                                <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu config-pageSizeCombo" role="menu">
+                                            <li><a href="javascript:void(0)">10</a></li>
+                                            <li><a href="javascript:void(0)">25</a></li>
+                                            <li><a href="javascript:void(0)">50</a></li>
+                                            <li><a href="javascript:void(0)">100</a></li>
+                                        </ul>
+                                     </span> </span>
+                           </div>
+                           <div class="pull-right search" style="margin-bottom:10px">
+                                <input type="text" class="form-control" name="config-testCaseSearch" id="config-testCaseSearch" placeholder="Search" />
+                           </div>
+                     </div>
+                     <div class="fixed-table-container" id="config-testcaseBody">
+                     </div>
+                      <div class="fixed-table-pagination">
+                           <div class="pull-left pagination-detail">
+                                <span class="pagination-info" id="config-testcase-page-info">Showing 1 to 10 of 800 rows</span>
+                           </div>
+
+                           <div class="pull-right pagination" id="config-testcase-pagination">
+                                <ul class="pagination">
+                                    <li class="page-first"><a href="javascript:void(0)">&lt;&lt;</a></li>
+                                    <li class="page-pre"><a href="javascript:void(0)">&lt;</a></li>
+                                    <li class="page-next"><a href="javascript:void(0)">&gt;</a></li>
+                                    <li class="page-last"><a href="javascript:void(0)">&gt;&gt;</a></li>
+                                </ul>
+                           </div>
+                      </div>
+                </div>
+            </div>
+            <!-- Results End -->
+            </div>
+        </div>
+        <div class="modal fade modal-config" id="modal-id-config">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;
+                            </span>
+                            <span class="sr-only">Close
+                            </span>
+                        </button>
+                        <span class="modal-title">Test Configuration Summary</span>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade modal-screenshot" id="modal-id-screenshot">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;
+                            </span>
+                            <span class="sr-only">Close
+                            </span>
+                        </button>
+                        <span class="modal-title">
+                        </span>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade modal-image" id="modal-id-image">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;
+                            </span>
+                            <span class="sr-only">Close
+                            </span>
+                        </button>
+                        <span class="modal-title">
+                        </span>
+                    </div>
+                    <div class="modal-body" class="img-fullscreen">
+                        <img src="" style="border: 1px solid #ecf0f1; border-radius: 4px;"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade modal-source" id="modal-id-source">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <span class="modal-title"></span>
+                    </div>
+                    <div class="modal-body" style="color: white">
+                        <iframe src="" frameborder=0 width=100% height=600 scrolling=auto></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade modal-stacktrace" id="modal-id-stacktrace">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <span class="modal-title"></span>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/render.min.js"></script>
+<script src="../js/readmore.min.js"></script>
+<script src="../js/jstree.min.js"></script>
+<script id="tableImpl" type="text/x-jsrender">
+        <table class="table table-striped table-hover" id="paginationTextCaseTable">
+            <thead>
+                <tr>
+                    <th style="width:5%" data-index="nil">#</th>
+                    <th style="width:13%;cursor: pointer;" data-index="suite">Suite</th>
+                    <th style="width:10%;cursor: pointer;" data-index="test">Test</th>
+                    <th style="width:15%;cursor: pointer;" data-index="packageInfo">Package</th>
+                    <th style="width:15%;cursor: pointer;" data-index="className">Class</th>
+                    <th style="width:15%;cursor: pointer;" data-index="methodName">Method</th>
+                    <th style="width:18%;cursor: pointer;" data-index="parameters">Parameters</th>
+                    <th style="width:9%" data-index="nil"><th>
+                </tr>
+            </thead>
+            <tbody>
+                {{for results}}
+                <tr data-toggle="tooltip" title='{{:~setStatusAndTimeAsToolTip(status, startTime, endTime)}}'>
+                    <td><span class="label label-{{if status == "Passed" }}success{{else status == "Failed"}}danger{{else status == "Skipped"}}warning{{else}}info{{/if}}" data-toggle="tooltip" >{{:#index+~startIndex}}</span></td>
+                    <td>{{:suite}}</td>
+                    <td>{{:test}}</td>
+                    <td>{{:packageInfo}}</td>
+                    <td>{{:className}}</td>
+                    <td>{{:methodName}}</td>
+                    <td>{{:parameters}}</td>
+                    <td>
+                        <button type="button" data-index="{{:test}}" class="btn btn-default btn-xs btn-config" data-toggle="tooltip" data-placement="top" title="Config"><span class="glyphicon glyphicon-cog"></span></button>
+                    {{if logs != null}}
+                        <button type="button" data-index="{{:#parent.index}}" class="btn btn-default btn-xs btn-screenshot" data-toggle="tooltip" data-placement="top" title="Reporter Output"><span class="glyphicon glyphicon-picture"></span></button>
+                    {{/if}}
+                    {{if status == "Failed" }}
+                        <button type="button" data-index="{{:#parent.index}}" class="btn btn-default btn-xs btn-stacktrace" data-toggle="tooltip" data-placement="top" title="Stacktrace"><span class="glyphicon glyphicon-warning-sign"></span></button>
+                    {{/if}}
+                    <td>
+                </tr>
+                {{/for}}
+            </tbody>
+        </table>
+    </script>
+<script id="config-tableImpl" type="text/x-jsrender">
+        <table class="table table-striped table-hover " id="paginationTextConfigTable">
+            <thead>
+                <tr>
+                    <th style="width:5%" data-index="nil">#</th>
+                    <th style="width:17%;cursor: pointer;" data-index="suite">Suite</th>
+                    <th style="width:16%;cursor: pointer;" data-index="test">Test</th>
+                    <th style="width:17%;cursor: pointer;" data-index="packageInfo">Package</th>
+                    <th style="width:16%;cursor: pointer;" data-index="className">Class</th>
+                    <th style="width:15%;cursor: pointer;" data-index="methodName">Method</th>
+                    <th style="width:10%;cursor: pointer;" data-index="type">Type</th>
+                    <th style="width:4%" data-index="nil"><th>
+                </tr>
+            </thead>
+            <tbody>
+                {{for results}}
+                <tr data-toggle="tooltip" title='{{:~setStatusAndTimeAsToolTip(status, startTime, endTime)}}'>
+                    <td><span class="label label-{{if status == "Passed" }}success{{else status == "Failed"}}danger{{else status == "Skipped"}}warning{{else}}info{{/if}}">{{:#index+~startIndex}}</span></td>
+                    <td>{{:suite}}</td>
+                    <td>{{:test}}</td>
+                    <td>{{:packageInfo}}</td>
+                    <td>{{:className}}</td>
+                    <td>{{:methodName}}</td>
+                    <td>{{:type}}</td>
+                    <td>
+                    {{if logs != null}}
+                        <button type="button" data-index="{{:#parent.index}}" class="btn btn-default btn-xs btn-screenshot-config" data-toggle="tooltip" data-placement="top" title="Reporter Output"><span class="glyphicon glyphicon-picture"></span></button>
+                    {{/if}}
+                    {{if status == "Failed" }}
+                        <button type="button" data-index="{{:#parent.index}}" class="btn btn-default btn-xs btn-stacktrace-config" data-toggle="tooltip" data-placement="top" title="Stacktrace"><span class="glyphicon glyphicon-warning-sign"></span></button>
+                    {{/if}}
+                    <td>
+                </tr>
+                {{/for}}
+            </tbody>
+        </table>
+    </script>
+<script id="gridImpl" type="text/x-jsrender">
+                {{for results}}
+                <div class="col-lg-4">
+                    <div class="panel panel-{{if status == "Passed" }}success{{else status == "Failed"}}danger{{else status == "Skipped"}}warning{{else}}info{{/if}}">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">{{:className}}.{{:methodName}}</h3>
+                        </div>
+                        <div class="panel-body">
+                            {{if ~getLatestImage(logs) != null}}
+                            <span class="thumbnail">
+                                    <img src="../{{:~getLatestImage(logs)}}" onclick='displayImage("../{{:~getLatestImage(logs)}}", "");'>
+                            </span>
+                            {{/if}}
+                            <ul data-toggle="tooltip" title='{{:~setStatusAndTimeAsToolTip(status, startTime, endTime)}}' class="list-group">
+                                <li class="list-group-item">
+                                    Suite: {{:suite}}
+                                </li>
+                                <li class="list-group-item">
+                                    Test: <a href="javascript:;" data-index="{{:test}}" class="btn-config">{{:test}}</a>
+                                </li>
+                                <li class="list-group-item">
+                                    Package: {{:packageInfo}}
+                                </li>
+                                <li class="list-group-item">
+                                    Class: {{:className}}
+                                </li>
+                                <li class="list-group-item">
+                                    Method: {{:methodName}}
+                                </li>
+                                <li class="list-group-item">
+                                    Parameters: {{:parameters}}
+                                </li>
+                            </ul>
+                            {{if logs != null}}
+                            <div class="col-lg-6">
+                                <button type="button" data-index="{{:#parent.index}}" class="btn btn-default btn-block btn-screenshot">Reporter Output</button>
+                            </div>
+                            {{/if}}
+                            {{if status == "Failed" }}
+                            <div class="col-lg-6">
+                                <button type="button" data-index="{{:#parent.index}}" class="btn btn-default btn-block btn-stacktrace">Stacktrace</button>
+                            </div>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+                {{/for}}
+    </script>
+
+<script id="screenshotImpl" type="text/x-jsrender">
+        <div class="row show">
+        {{for logs}}
+            {{if #index != 0 && (#index%3) == 0}}
+                </div>
+                <div class="row show">
+            {{/if}}
+            <div class="col-lg-4">
+                <div class="thumbnail">
+                    {{if image != null}}
+                    <img src="../{{:image}}" alt="{{:message}}" onclick='displayImage("../{{:image}}", "");' style="border:1px solid #ecf0f1">
+                    {{/if}}
+                    <div class="caption">
+                        <p>{{:message}}</p>
+                        {{if source != null}}
+                        <p>
+                            <button type="button" class="btn btn-default btn-block btn-source" onclick='displaySource("../{{:source}}", "");'>Source</button>
+                        </p>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        {{/for}}
+        </div>
+</script>
+<script id="stacktraceImpl" type="text/x-jsrender">
+        <div class="row show">
+            <p>{{:~getUpdatedStackTrace(stacktrace)}}</p>
+        </div>
+</script>
+<script id="configImpl" type="text/x-jsrender">
+        <table class="table table-striped table-hover" id="configTable">
+            <thead>
+                <tr>
+                    <th>Parameter Name</th>
+                    <th>Parameter Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{for results}}
+                <tr>
+                    <td>{{:key}}</td>
+                    <td>{{:value}}</td>
+                </tr>
+                {{/for}}
+            </tbody>
+        </table>
+</script>
+<script type="text/javascript">
+  var reports =
+{
+  "reportSummary": {
+    "testMethodsSummary": {
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0
+    },
+    "configurationMethodsSummary": {
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "testMethods": [
+    {
+      "suite": "Selion Test",
+      "test": "SampleTest",
+      "packageInfo": "Tests",
+      "className": "LoginTest",
+      "methodName": "DemoTest1",
+      "status": "Passed",
+      "startTime": "2020-11-15T21:10:01.606+05:30",
+      "endTime": "2020-11-15T21:10:13.820+05:30"
+    },
+    {
+      "suite": "Selion Test",
+      "test": "SampleTest",
+      "packageInfo": "Tests",
+      "className": "LoginTest",
+      "methodName": "DemoTest1",
+      "status": "Passed",
+      "startTime": "2020-11-15T21:10:01.606+05:30",
+      "endTime": "2020-11-15T21:10:13.820+05:30"
+    }
+  ],
+  "configurationMethods": [],
+  "configSummary": {
+    "currentDate": "2020-11-15T21:10:01.580+05:30"
+  },
+  "localConfigSummary": [
+    {
+      "currentDate": "2020-11-15T21:10:01.586+05:30",
+      "suite": "Selion Test",
+      "test": "SampleTest"
+    },
+    {
+      "currentDate": "2020-11-15T21:10:01.589+05:30",
+      "suite": "Selion Test",
+      "test": "SampleTest"
+    }
+  ],
+  "reporterMetadata": {
+    "currentDate": {
+      "displayLabel": "Current Date"
+    }
+  }
+}
+  ;
+</script>
+<script src="../js/main.js"></script>
+    </body>
+</html>
